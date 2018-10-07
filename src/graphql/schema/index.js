@@ -25,12 +25,16 @@ let resolvers = {
 const typeDefs = [Query, Mutation];
 
 // Read the current directory and load types and resolvers automatically
-fs.readdirSync(__dirname)
- .filter(dir => (dir.indexOf('.') < 0))
- .forEach((dir) => {
-   const tmp = require(path.join(__dirname, dir)).default; // eslint-disable-line
-   resolvers = merge(resolvers, tmp.resolvers);
-   typeDefs.push(tmp.types);
+const foundOnlyModuleFolders = fs.readdirSync(__dirname)
+ .filter(dir => {
+   const isFolder = dir.indexOf('.') < 0;
+   return isFolder
+})
+ foundOnlyModuleFolders.forEach((dir) => {
+   const modulePath = path.join(__dirname, dir)
+   const currentModule = require(modulePath).default; // eslint-disable-line
+   resolvers = merge(resolvers, currentModule.resolvers);
+   typeDefs.push(currentModule.types);
  });
 
 export default {
