@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Wozniaxos/node-express-apollo-graphQL-project#readme",
   "dependencies": {
     "graphql": "^0.13.2",
+    "graphql-yoga": "^1.16.4",
     "prisma-client-lib": "^1.18.1"
   }
 }
