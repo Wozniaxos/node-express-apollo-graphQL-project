@@ -1,11 +1,11 @@
-const { Query } = require('./Query')
-const { auth } = require('./Mutation/auth')
-const { AuthPayload } = require('./AuthPayload')
+const { Query } = require('./query')
+const { auth } = require('../mutations/auth')
+const { AuthPayload } = require('./authPayload')
 
 module.exports = {
   Query,
   Mutation: {
-    ...auth
+    ...auth,
   },
   AuthPayload
 }

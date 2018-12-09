@@ -18,9 +18,10 @@
   },
   "homepage": "https://github.com/Wozniaxos/node-express-apollo-graphQL-project#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.16.4",
-    "multer": "^1.4.1",
+    "jsonwebtoken": "^8.4.0",
     "prisma-client-lib": "^1.18.1"
   }
 }
