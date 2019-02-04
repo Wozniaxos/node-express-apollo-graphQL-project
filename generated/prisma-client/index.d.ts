@@ -14,6 +14,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  cinema: (where?: CinemaWhereInput) => Promise<boolean>;
+  movie: (where?: MovieWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -36,6 +38,44 @@ export interface Prisma {
    * Queries
    */
 
+  cinema: (where: CinemaWhereUniqueInput) => CinemaPromise;
+  cinemas: (args?: {
+    where?: CinemaWhereInput;
+    orderBy?: CinemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Cinema>;
+  cinemasConnection: (args?: {
+    where?: CinemaWhereInput;
+    orderBy?: CinemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CinemaConnectionPromise;
+  movie: (where: MovieWhereUniqueInput) => MoviePromise;
+  movies: (args?: {
+    where?: MovieWhereInput;
+    orderBy?: MovieOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Movie>;
+  moviesConnection: (args?: {
+    where?: MovieWhereInput;
+    orderBy?: MovieOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => MovieConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -61,6 +101,38 @@ export interface Prisma {
    * Mutations
    */
 
+  createCinema: (data: CinemaCreateInput) => CinemaPromise;
+  updateCinema: (args: {
+    data: CinemaUpdateInput;
+    where: CinemaWhereUniqueInput;
+  }) => CinemaPromise;
+  updateManyCinemas: (args: {
+    data: CinemaUpdateManyMutationInput;
+    where?: CinemaWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCinema: (args: {
+    where: CinemaWhereUniqueInput;
+    create: CinemaCreateInput;
+    update: CinemaUpdateInput;
+  }) => CinemaPromise;
+  deleteCinema: (where: CinemaWhereUniqueInput) => CinemaPromise;
+  deleteManyCinemas: (where?: CinemaWhereInput) => BatchPayloadPromise;
+  createMovie: (data: MovieCreateInput) => MoviePromise;
+  updateMovie: (args: {
+    data: MovieUpdateInput;
+    where: MovieWhereUniqueInput;
+  }) => MoviePromise;
+  updateManyMovies: (args: {
+    data: MovieUpdateManyMutationInput;
+    where?: MovieWhereInput;
+  }) => BatchPayloadPromise;
+  upsertMovie: (args: {
+    where: MovieWhereUniqueInput;
+    create: MovieCreateInput;
+    update: MovieUpdateInput;
+  }) => MoviePromise;
+  deleteMovie: (where: MovieWhereUniqueInput) => MoviePromise;
+  deleteManyMovies: (where?: MovieWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -86,6 +158,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  cinema: (
+    where?: CinemaSubscriptionWhereInput
+  ) => CinemaSubscriptionPayloadSubscription;
+  movie: (
+    where?: MovieSubscriptionWhereInput
+  ) => MovieSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -99,6 +177,32 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type MovieOrderByInput =
+  | "title_ASC"
+  | "title_DESC"
+  | "rate_ASC"
+  | "rate_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CinemaOrderByInput =
+  | "name_ASC"
+  | "name_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -108,12 +212,104 @@ export type UserOrderByInput =
   | "password_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "minimalRate_ASC"
+  | "minimalRate_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type CinemaWhereUniqueInput = AtLeastOne<{
+  name: String;
+}>;
+
+export interface MovieWhereInput {
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  rate?: Int;
+  rate_not?: Int;
+  rate_in?: Int[] | Int;
+  rate_not_in?: Int[] | Int;
+  rate_lt?: Int;
+  rate_lte?: Int;
+  rate_gt?: Int;
+  rate_gte?: Int;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  cinemas_every?: CinemaWhereInput;
+  cinemas_some?: CinemaWhereInput;
+  cinemas_none?: CinemaWhereInput;
+  AND?: MovieWhereInput[] | MovieWhereInput;
+  OR?: MovieWhereInput[] | MovieWhereInput;
+  NOT?: MovieWhereInput[] | MovieWhereInput;
+}
+
+export interface CinemaWhereInput {
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  movies_every?: MovieWhereInput;
+  movies_some?: MovieWhereInput;
+  movies_none?: MovieWhereInput;
+  AND?: CinemaWhereInput[] | CinemaWhereInput;
+  OR?: CinemaWhereInput[] | CinemaWhereInput;
+  NOT?: CinemaWhereInput[] | CinemaWhereInput;
+}
+
+export type MovieWhereUniqueInput = AtLeastOne<{
+  title: String;
+}>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
@@ -177,27 +373,318 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  minimalRate?: Int;
+  minimalRate_not?: Int;
+  minimalRate_in?: Int[] | Int;
+  minimalRate_not_in?: Int[] | Int;
+  minimalRate_lt?: Int;
+  minimalRate_lte?: Int;
+  minimalRate_gt?: Int;
+  minimalRate_gte?: Int;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
+}
+
+export interface CinemaCreateInput {
+  name: String;
+  movies?: MovieCreateManyWithoutCinemasInput;
+}
+
+export interface MovieCreateManyWithoutCinemasInput {
+  create?: MovieCreateWithoutCinemasInput[] | MovieCreateWithoutCinemasInput;
+  connect?: MovieWhereUniqueInput[] | MovieWhereUniqueInput;
+}
+
+export interface MovieCreateWithoutCinemasInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieCreategenresInput;
+  description?: String;
+  image?: String;
+}
+
+export interface MovieCreategenresInput {
+  set?: String[] | String;
+}
+
+export interface CinemaUpdateInput {
+  name?: String;
+  movies?: MovieUpdateManyWithoutCinemasInput;
+}
+
+export interface MovieUpdateManyWithoutCinemasInput {
+  create?: MovieCreateWithoutCinemasInput[] | MovieCreateWithoutCinemasInput;
+  delete?: MovieWhereUniqueInput[] | MovieWhereUniqueInput;
+  connect?: MovieWhereUniqueInput[] | MovieWhereUniqueInput;
+  disconnect?: MovieWhereUniqueInput[] | MovieWhereUniqueInput;
+  update?:
+    | MovieUpdateWithWhereUniqueWithoutCinemasInput[]
+    | MovieUpdateWithWhereUniqueWithoutCinemasInput;
+  upsert?:
+    | MovieUpsertWithWhereUniqueWithoutCinemasInput[]
+    | MovieUpsertWithWhereUniqueWithoutCinemasInput;
+  deleteMany?: MovieScalarWhereInput[] | MovieScalarWhereInput;
+  updateMany?:
+    | MovieUpdateManyWithWhereNestedInput[]
+    | MovieUpdateManyWithWhereNestedInput;
+}
+
+export interface MovieUpdateWithWhereUniqueWithoutCinemasInput {
+  where: MovieWhereUniqueInput;
+  data: MovieUpdateWithoutCinemasDataInput;
+}
+
+export interface MovieUpdateWithoutCinemasDataInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieUpdategenresInput;
+  description?: String;
+  image?: String;
+}
+
+export interface MovieUpdategenresInput {
+  set?: String[] | String;
+}
+
+export interface MovieUpsertWithWhereUniqueWithoutCinemasInput {
+  where: MovieWhereUniqueInput;
+  update: MovieUpdateWithoutCinemasDataInput;
+  create: MovieCreateWithoutCinemasInput;
+}
+
+export interface MovieScalarWhereInput {
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  rate?: Int;
+  rate_not?: Int;
+  rate_in?: Int[] | Int;
+  rate_not_in?: Int[] | Int;
+  rate_lt?: Int;
+  rate_lte?: Int;
+  rate_gt?: Int;
+  rate_gte?: Int;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  AND?: MovieScalarWhereInput[] | MovieScalarWhereInput;
+  OR?: MovieScalarWhereInput[] | MovieScalarWhereInput;
+  NOT?: MovieScalarWhereInput[] | MovieScalarWhereInput;
+}
+
+export interface MovieUpdateManyWithWhereNestedInput {
+  where: MovieScalarWhereInput;
+  data: MovieUpdateManyDataInput;
+}
+
+export interface MovieUpdateManyDataInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieUpdategenresInput;
+  description?: String;
+  image?: String;
+}
+
+export interface CinemaUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface MovieCreateInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieCreategenresInput;
+  description?: String;
+  image?: String;
+  cinemas?: CinemaCreateManyWithoutMoviesInput;
+}
+
+export interface CinemaCreateManyWithoutMoviesInput {
+  create?: CinemaCreateWithoutMoviesInput[] | CinemaCreateWithoutMoviesInput;
+  connect?: CinemaWhereUniqueInput[] | CinemaWhereUniqueInput;
+}
+
+export interface CinemaCreateWithoutMoviesInput {
+  name: String;
+}
+
+export interface MovieUpdateInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieUpdategenresInput;
+  description?: String;
+  image?: String;
+  cinemas?: CinemaUpdateManyWithoutMoviesInput;
+}
+
+export interface CinemaUpdateManyWithoutMoviesInput {
+  create?: CinemaCreateWithoutMoviesInput[] | CinemaCreateWithoutMoviesInput;
+  delete?: CinemaWhereUniqueInput[] | CinemaWhereUniqueInput;
+  connect?: CinemaWhereUniqueInput[] | CinemaWhereUniqueInput;
+  disconnect?: CinemaWhereUniqueInput[] | CinemaWhereUniqueInput;
+  update?:
+    | CinemaUpdateWithWhereUniqueWithoutMoviesInput[]
+    | CinemaUpdateWithWhereUniqueWithoutMoviesInput;
+  upsert?:
+    | CinemaUpsertWithWhereUniqueWithoutMoviesInput[]
+    | CinemaUpsertWithWhereUniqueWithoutMoviesInput;
+  deleteMany?: CinemaScalarWhereInput[] | CinemaScalarWhereInput;
+  updateMany?:
+    | CinemaUpdateManyWithWhereNestedInput[]
+    | CinemaUpdateManyWithWhereNestedInput;
+}
+
+export interface CinemaUpdateWithWhereUniqueWithoutMoviesInput {
+  where: CinemaWhereUniqueInput;
+  data: CinemaUpdateWithoutMoviesDataInput;
+}
+
+export interface CinemaUpdateWithoutMoviesDataInput {
+  name?: String;
+}
+
+export interface CinemaUpsertWithWhereUniqueWithoutMoviesInput {
+  where: CinemaWhereUniqueInput;
+  update: CinemaUpdateWithoutMoviesDataInput;
+  create: CinemaCreateWithoutMoviesInput;
+}
+
+export interface CinemaScalarWhereInput {
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: CinemaScalarWhereInput[] | CinemaScalarWhereInput;
+  OR?: CinemaScalarWhereInput[] | CinemaScalarWhereInput;
+  NOT?: CinemaScalarWhereInput[] | CinemaScalarWhereInput;
+}
+
+export interface CinemaUpdateManyWithWhereNestedInput {
+  where: CinemaScalarWhereInput;
+  data: CinemaUpdateManyDataInput;
+}
+
+export interface CinemaUpdateManyDataInput {
+  name?: String;
+}
+
+export interface MovieUpdateManyMutationInput {
+  title?: String;
+  rate?: Int;
+  genres?: MovieUpdategenresInput;
+  description?: String;
+  image?: String;
 }
 
 export interface UserCreateInput {
   email: String;
   password: String;
   name: String;
+  minimalRate?: Int;
+  blockedGenres?: UserCreateblockedGenresInput;
+  cinemas?: UserCreatecinemasInput;
+}
+
+export interface UserCreateblockedGenresInput {
+  set?: String[] | String;
+}
+
+export interface UserCreatecinemasInput {
+  set?: String[] | String;
 }
 
 export interface UserUpdateInput {
   email?: String;
   password?: String;
   name?: String;
+  minimalRate?: Int;
+  blockedGenres?: UserUpdateblockedGenresInput;
+  cinemas?: UserUpdatecinemasInput;
+}
+
+export interface UserUpdateblockedGenresInput {
+  set?: String[] | String;
+}
+
+export interface UserUpdatecinemasInput {
+  set?: String[] | String;
 }
 
 export interface UserUpdateManyMutationInput {
   email?: String;
   password?: String;
   name?: String;
+  minimalRate?: Int;
+  blockedGenres?: UserUpdateblockedGenresInput;
+  cinemas?: UserUpdatecinemasInput;
+}
+
+export interface CinemaSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CinemaWhereInput;
+  AND?: CinemaSubscriptionWhereInput[] | CinemaSubscriptionWhereInput;
+  OR?: CinemaSubscriptionWhereInput[] | CinemaSubscriptionWhereInput;
+  NOT?: CinemaSubscriptionWhereInput[] | CinemaSubscriptionWhereInput;
+}
+
+export interface MovieSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MovieWhereInput;
+  AND?: MovieSubscriptionWhereInput[] | MovieSubscriptionWhereInput;
+  OR?: MovieSubscriptionWhereInput[] | MovieSubscriptionWhereInput;
+  NOT?: MovieSubscriptionWhereInput[] | MovieSubscriptionWhereInput;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -215,48 +702,101 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface User {
-  id: ID_Output;
-  email: String;
-  password: String;
+export interface Cinema {
   name: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
+export interface CinemaPromise extends Promise<Cinema>, Fragmentable {
   name: () => Promise<String>;
+  movies: <T = FragmentableArray<Movie>>(args?: {
+    where?: MovieWhereInput;
+    orderBy?: MovieOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface CinemaSubscription
+  extends Promise<AsyncIterator<Cinema>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  movies: <T = Promise<AsyncIterator<MovieSubscription>>>(args?: {
+    where?: MovieWhereInput;
+    orderBy?: MovieOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserConnection {
+export interface Movie {
+  title?: String;
+  rate?: Int;
+  genres: String[];
+  description?: String;
+  image?: String;
+}
+
+export interface MoviePromise extends Promise<Movie>, Fragmentable {
+  title: () => Promise<String>;
+  rate: () => Promise<Int>;
+  genres: () => Promise<String[]>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  cinemas: <T = FragmentableArray<Cinema>>(args?: {
+    where?: CinemaWhereInput;
+    orderBy?: CinemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface MovieSubscription
+  extends Promise<AsyncIterator<Movie>>,
+    Fragmentable {
+  title: () => Promise<AsyncIterator<String>>;
+  rate: () => Promise<AsyncIterator<Int>>;
+  genres: () => Promise<AsyncIterator<String[]>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  cinemas: <T = Promise<AsyncIterator<CinemaSubscription>>>(args?: {
+    where?: CinemaWhereInput;
+    orderBy?: CinemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface CinemaConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: CinemaEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface CinemaConnectionPromise
+  extends Promise<CinemaConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<CinemaEdge>>() => T;
+  aggregate: <T = AggregateCinemaPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface CinemaConnectionSubscription
+  extends Promise<AsyncIterator<CinemaConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CinemaEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCinemaSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -280,6 +820,146 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CinemaEdge {
+  node: Cinema;
+  cursor: String;
+}
+
+export interface CinemaEdgePromise extends Promise<CinemaEdge>, Fragmentable {
+  node: <T = CinemaPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CinemaEdgeSubscription
+  extends Promise<AsyncIterator<CinemaEdge>>,
+    Fragmentable {
+  node: <T = CinemaSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCinema {
+  count: Int;
+}
+
+export interface AggregateCinemaPromise
+  extends Promise<AggregateCinema>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCinemaSubscription
+  extends Promise<AsyncIterator<AggregateCinema>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MovieConnection {
+  pageInfo: PageInfo;
+  edges: MovieEdge[];
+}
+
+export interface MovieConnectionPromise
+  extends Promise<MovieConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MovieEdge>>() => T;
+  aggregate: <T = AggregateMoviePromise>() => T;
+}
+
+export interface MovieConnectionSubscription
+  extends Promise<AsyncIterator<MovieConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MovieEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMovieSubscription>() => T;
+}
+
+export interface MovieEdge {
+  node: Movie;
+  cursor: String;
+}
+
+export interface MovieEdgePromise extends Promise<MovieEdge>, Fragmentable {
+  node: <T = MoviePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MovieEdgeSubscription
+  extends Promise<AsyncIterator<MovieEdge>>,
+    Fragmentable {
+  node: <T = MovieSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMovie {
+  count: Int;
+}
+
+export interface AggregateMoviePromise
+  extends Promise<AggregateMovie>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMovieSubscription
+  extends Promise<AsyncIterator<AggregateMovie>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  password: String;
+  name: String;
+  minimalRate?: Int;
+  blockedGenres: String[];
+  cinemas: String[];
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+  minimalRate: () => Promise<Int>;
+  blockedGenres: () => Promise<String[]>;
+  cinemas: () => Promise<String[]>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  minimalRate: () => Promise<AsyncIterator<Int>>;
+  blockedGenres: () => Promise<AsyncIterator<String[]>>;
+  cinemas: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -331,6 +1011,100 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface CinemaSubscriptionPayload {
+  mutation: MutationType;
+  node: Cinema;
+  updatedFields: String[];
+  previousValues: CinemaPreviousValues;
+}
+
+export interface CinemaSubscriptionPayloadPromise
+  extends Promise<CinemaSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CinemaPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CinemaPreviousValuesPromise>() => T;
+}
+
+export interface CinemaSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CinemaSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CinemaSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CinemaPreviousValuesSubscription>() => T;
+}
+
+export interface CinemaPreviousValues {
+  name: String;
+}
+
+export interface CinemaPreviousValuesPromise
+  extends Promise<CinemaPreviousValues>,
+    Fragmentable {
+  name: () => Promise<String>;
+}
+
+export interface CinemaPreviousValuesSubscription
+  extends Promise<AsyncIterator<CinemaPreviousValues>>,
+    Fragmentable {
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MovieSubscriptionPayload {
+  mutation: MutationType;
+  node: Movie;
+  updatedFields: String[];
+  previousValues: MoviePreviousValues;
+}
+
+export interface MovieSubscriptionPayloadPromise
+  extends Promise<MovieSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MoviePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MoviePreviousValuesPromise>() => T;
+}
+
+export interface MovieSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MovieSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MovieSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MoviePreviousValuesSubscription>() => T;
+}
+
+export interface MoviePreviousValues {
+  title?: String;
+  rate?: Int;
+  genres: String[];
+  description?: String;
+  image?: String;
+}
+
+export interface MoviePreviousValuesPromise
+  extends Promise<MoviePreviousValues>,
+    Fragmentable {
+  title: () => Promise<String>;
+  rate: () => Promise<Int>;
+  genres: () => Promise<String[]>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+}
+
+export interface MoviePreviousValuesSubscription
+  extends Promise<AsyncIterator<MoviePreviousValues>>,
+    Fragmentable {
+  title: () => Promise<AsyncIterator<String>>;
+  rate: () => Promise<AsyncIterator<Int>>;
+  genres: () => Promise<AsyncIterator<String[]>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -361,6 +1135,9 @@ export interface UserPreviousValues {
   email: String;
   password: String;
   name: String;
+  minimalRate?: Int;
+  blockedGenres: String[];
+  cinemas: String[];
 }
 
 export interface UserPreviousValuesPromise
@@ -370,6 +1147,9 @@ export interface UserPreviousValuesPromise
   email: () => Promise<String>;
   password: () => Promise<String>;
   name: () => Promise<String>;
+  minimalRate: () => Promise<Int>;
+  blockedGenres: () => Promise<String[]>;
+  cinemas: () => Promise<String[]>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -379,13 +1159,10 @@ export interface UserPreviousValuesSubscription
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  minimalRate: () => Promise<AsyncIterator<Int>>;
+  blockedGenres: () => Promise<AsyncIterator<String[]>>;
+  cinemas: () => Promise<AsyncIterator<String[]>>;
 }
-
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
@@ -402,6 +1179,12 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
 export type Long = string;
 
 /**
@@ -409,6 +1192,14 @@ export type Long = string;
  */
 
 export const models: Model[] = [
+  {
+    name: "Cinema",
+    embedded: false
+  },
+  {
+    name: "Movie",
+    embedded: false
+  },
   {
     name: "User",
     embedded: false

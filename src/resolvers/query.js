@@ -4,6 +4,11 @@ const Query = {
   me (parent, args, ctx, info) {
     const id = getUserId(ctx)
     return ctx.prisma.user({ id }, info);
+  },
+
+  users (parent, args, ctx, info) {
+    const id = getUserId(ctx)
+    return ctx.prisma.users();
   }
 }
 

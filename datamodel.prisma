@@ -3,4 +3,21 @@ type User {
   email: String! @unique
   password: String!
   name: String!
+  minimalRate: Int
+  blockedGenres: [String!]!
+  cinemas: [String!]!
+}
+
+type Cinema {
+  name: String! @unique
+  movies: [Movie!]!
+}
+
+type Movie {
+  title: String @unique
+  rate: Int
+  genres: [String!]!
+  description: String
+  image: String
+  cinemas: [Cinema!]!
 }
